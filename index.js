@@ -47,7 +47,11 @@ function linked_list_factory() {
   }
 
   function head() {
-    return head_value;
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        return node;
+      }
+    }
   }
 
   function tail() {
@@ -106,7 +110,33 @@ function linked_list_factory() {
     return false;
   }
 
-  return { nodes, append, prepend, size, head, tail, at, pop, contains };
+  function find(value) {
+    let prev_node;
+    // find the head node
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        prev_node = node;
+      }
+    }
+    // navigate the list starting from head
+    for (let i = 0; i < nodes.length; i++) {
+      // check if the current node is the one we're looking of
+      if (prev_node.value === value) {
+        return i;
+      }
+      // get the next node
+      else {
+        for (const node of nodes) {
+          if (node.value === prev_node.nextNode) {
+            prev_node = node;
+            break;
+          }
+        }
+      }
+    }
+  }
+
+  return { nodes, append, prepend, size, head, tail, at, pop, contains, find };
 }
 
 const list = linked_list_factory();
@@ -116,4 +146,4 @@ list.append("landry");
 list.append("petnga");
 
 console.log(list);
-console.log(list.contains("fuck"));
+console.log(list.find("petnga"));
