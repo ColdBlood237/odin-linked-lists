@@ -77,7 +77,27 @@ function linked_list_factory() {
     return prev_node;
   }
 
-  return { nodes, append, prepend, size, head, tail, at };
+  function pop() {
+    for (const node of nodes) {
+      if (node.nextNode === null) {
+        let tail_node = node;
+        for (const node of nodes) {
+          // remove link pointing at the last node
+          if (node.nextNode === tail_node.value) {
+            node.nextNode = null;
+          }
+        }
+        for (let i = 0; i < nodes.length; i++) {
+          // remove the node from the list of nodes
+          if (nodes[i].value === tail_node.value) {
+            nodes.splice(i, 1);
+          }
+        }
+      }
+    }
+  }
+
+  return { nodes, append, prepend, size, head, tail, at, pop };
 }
 
 const list = linked_list_factory();
@@ -87,4 +107,3 @@ list.append("landry");
 list.append("petnga");
 
 console.log(list);
-console.log(list.at(2));
