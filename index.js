@@ -5,7 +5,6 @@ function node_factory(value, nextNode) {
   if (nextNode === undefined) {
     nextNode = null;
   }
-  let index;
   return { value, nextNode };
 }
 
@@ -36,6 +35,7 @@ function linked_list_factory() {
       }
       if (!link_found) {
         // link to the node not found = head node
+        head_value = value;
         nodes.push(node_factory(value, node_value));
         return;
       }
@@ -58,15 +58,33 @@ function linked_list_factory() {
     }
   }
 
+  function at(index) {
+    let prev_node;
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        prev_node = node;
+      }
+    }
+
+    for (let i = 0; i < index; i++) {
+      for (const node of nodes) {
+        if (node.value === prev_node.nextNode) {
+          prev_node = node;
+        }
+      }
+    }
+
+    return prev_node;
+  }
+
   return { nodes, append, prepend, size, head, tail, at };
 }
 
-// const list = linked_list_factory();
-// list.append("hi");
-// list.append("ryan");
-// list.append("landry");
-// list.prepend("sir");
+const list = linked_list_factory();
+list.append("hi");
+list.append("ryan");
+list.append("landry");
+list.append("petnga");
 
-// console.log(list);
-// console.log(list.head());
-// console.log(list.tail());
+console.log(list);
+console.log(list.at(2));
