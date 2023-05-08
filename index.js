@@ -97,7 +97,16 @@ function linked_list_factory() {
     }
   }
 
-  return { nodes, append, prepend, size, head, tail, at, pop };
+  function contains(value) {
+    for (const node of nodes) {
+      if (node.value === value) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  return { nodes, append, prepend, size, head, tail, at, pop, contains };
 }
 
 const list = linked_list_factory();
@@ -107,3 +116,4 @@ list.append("landry");
 list.append("petnga");
 
 console.log(list);
+console.log(list.contains("fuck"));
