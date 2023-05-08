@@ -137,7 +137,57 @@ function linked_list_factory() {
     }
   }
 
-  return { nodes, append, prepend, size, head, tail, at, pop, contains, find };
+  function toString() {
+    let string_list = "";
+    let prev_node;
+    // find the head node
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        prev_node = node;
+      }
+    }
+
+    // add each node at the string
+    for (let i = 0; i < nodes.length; i++) {
+      if (prev_node.nextNode !== null) {
+        string_list += `( ${prev_node.value} ) -> `;
+      } else {
+        string_list += `null`;
+      }
+
+      // look for the next node
+      for (const node of nodes) {
+        if (node.value === prev_node.nextNode) {
+          prev_node = node;
+          break;
+        }
+      }
+    }
+
+    return string_list;
+  }
+
+  function insertAt(value, index) {
+    if (prev_node.nextNode !== null) {
+      string_list += `( ${prev_node.value} ) -> `;
+    } else {
+      string_list += `null`;
+    }
+  }
+
+  return {
+    nodes,
+    append,
+    prepend,
+    size,
+    head,
+    tail,
+    at,
+    pop,
+    contains,
+    find,
+    toString,
+  };
 }
 
 const list = linked_list_factory();
@@ -147,4 +197,4 @@ list.append("landry");
 list.append("petnga");
 
 console.log(list);
-console.log(list.at(2));
+console.log(list.toString());
