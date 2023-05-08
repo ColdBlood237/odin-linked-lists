@@ -152,7 +152,7 @@ function linked_list_factory() {
       if (prev_node.nextNode !== null) {
         string_list += `( ${prev_node.value} ) -> `;
       } else {
-        string_list += `null`;
+        string_list += `( ${prev_node.value} ) -> null`;
       }
 
       // look for the next node
@@ -168,10 +168,116 @@ function linked_list_factory() {
   }
 
   function insertAt(value, index) {
-    if (prev_node.nextNode !== null) {
-      string_list += `( ${prev_node.value} ) -> `;
+    if (index < 1 || index >= nodes.length) {
+      throw console.error(
+        `Index must be between 1 and ${nodes.length - 1} included`
+      );
+    }
+    let prev_node;
+    // get the head node
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        prev_node = node;
+      }
+    }
+
+    // get the node currently at position index
+    for (let i = 0; i < index; i++) {
+      for (const node of nodes) {
+        if (node.value === prev_node.nextNode) {
+          prev_node = node;
+          break;
+        }
+      }
+    }
+
+    // initialize the new node with a link to the node he which it took the place
+    let new_node = node_factory(value, prev_node.value);
+
+    // get the head node again
+    for (const node of nodes) {
+      if (node.value === head_value) {
+        prev_node = node;
+      }
+    }
+
+    // get the node at position just behind index
+    for (let i = 0; i < index - 1; i++) {
+      for (const node of nodes) {
+        if (node.value === prev_node.nextNode) {
+          prev_node = node;
+          break;
+        }
+      }
+    }
+
+    // link that node to the new node just inserted
+    prev_node.nextNode = new_node.value;
+
+    nodes.push(new_node);
+  }
+
+  function removeAt(index) {
+    // remove the head node
+    if (index === 0) {
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].value === head_value) {
+          head_value = nodes[i].nextNode;
+          nodes.splice(i, 1);
+        }
+      }
+    } else if (index < nodes.length) {
+      let prev_node;
+      // get the head node
+      for (const node of nodes) {
+        if (node.value === head_value) {
+          prev_node = node;
+        }
+      }
+
+      // get the node currently at position index
+      for (let i = 0; i < index; i++) {
+        for (const node of nodes) {
+          if (node.value === prev_node.nextNode) {
+            prev_node = node;
+            break;
+          }
+        }
+      }
+
+      // save the reference to the just after index
+      let next_node = prev_node.nextNode;
+
+      // remove that node from the nodes array
+      for (let i = 0; i < nodes.length; i++) {
+        if (nodes[i].value === prev_node.value) {
+          nodes.splice(i, 1);
+        }
+      }
+
+      // get the head node
+      for (const node of nodes) {
+        if (node.value === head_value) {
+          prev_node = node;
+        }
+      }
+
+      // get the node just before index
+      for (let i = 0; i < index; i++) {
+        for (const node of nodes) {
+          if (node.value === prev_node.nextNode) {
+            prev_node = node;
+            break;
+          }
+        }
+      }
+
+      // make the node just before index refer to the one just after index
+      prev_node.nextNode = next_node;
     } else {
-      string_list += `null`;
+      throw console.error(
+        `Index must be between 0 and ${nodes.length - 1} included`
+      );
     }
   }
 
@@ -187,6 +293,8 @@ function linked_list_factory() {
     contains,
     find,
     toString,
+    insertAt,
+    removeAt,
   };
 }
 
@@ -196,5 +304,8 @@ list.append("ryan");
 list.append("landry");
 list.append("petnga");
 
-console.log(list);
+console.log(list.toString());
+
+list.removeAt(3);
+
 console.log(list.toString());
