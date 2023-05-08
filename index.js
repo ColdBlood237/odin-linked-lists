@@ -74,6 +74,7 @@ function linked_list_factory() {
       for (const node of nodes) {
         if (node.value === prev_node.nextNode) {
           prev_node = node;
+          break;
         }
       }
     }
@@ -146,4 +147,4 @@ list.append("landry");
 list.append("petnga");
 
 console.log(list);
-console.log(list.find("petnga"));
+console.log(list.at(2));
